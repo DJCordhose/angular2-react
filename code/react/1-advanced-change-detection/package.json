@@ -1,0 +1,36 @@
+{
+  "name": "",
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "rm -rf dist/ public/dist/",
+    "webpack": "webpack",
+    "webpack:watch": "webpack && open public/index.html && webpack --watch",
+    "devserver": "webpack-dev-server --progress --colors --content-base public",
+    "check": "flow"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "immutable": "^3.8.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
+  "devDependencies": {
+    "babel": "*",
+    "babel-cli": "*",
+    "babel-core": "*",
+    "babel-eslint": "*",
+    "babel-loader": "*",
+    "babel-preset-es2015": "*",
+    "babel-preset-react": "*",
+    "eslint": "*",
+    "eslint-plugin-flowtype": "*",
+    "eslint-plugin-flowtype-errors": "*",
+    "eslint-plugin-react": "*",
+    "flow-bin": "*",
+    "react-hot-loader": "^3.0.0-beta.2",
+    "react-loader": "*",
+    "source-map-loader": "latest",
+    "webpack": "*",
+    "webpack-dev-server": "latest"
+  }
+}

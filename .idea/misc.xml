@@ -5,6 +5,9 @@
     <option name="id" value="1470298080795" />
     <option name="name" value="default" />
   </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="FLOW" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>

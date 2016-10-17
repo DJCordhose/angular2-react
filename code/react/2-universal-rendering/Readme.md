@@ -1,0 +1,1 @@
+First page impression rendered on server, than full interaction on client

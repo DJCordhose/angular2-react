@@ -16,11 +16,21 @@ export default class Segment extends React.Component {
 
     render() {
         const {boxes, currentId} = this.props;
-        return (<g>
-            {
-                boxes.map((box, index) => <Box key={box.id} box={box}
-                                               selected={box.id === currentId}/>)
+		
+		let unselectedBoxes = [];
+        let selectedBox;
+        
+        boxes.forEach(box => {
+            if (box.id === currentId) { 
+                selectedBox = <Box key={box.id} box={box} selected={true} />;
+            } else {
+                unselectedBoxes.push(<Box key={box.id} box={box} selected={false} /> );
             }
-        </g>);
+        });
+		
+        return (<g>
+			{ unselectedBoxes }
+            { selectedBox }
+		</g>);
     }
 }

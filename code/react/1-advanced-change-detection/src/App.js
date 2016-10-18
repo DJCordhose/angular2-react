@@ -18,20 +18,35 @@ export default class App extends React.Component {
 
     render() {
         const {boxes} = this.state;
+        
+        let unselectedBoxes = [];
+        let selectedBox;
+        
+        boxes.forEach(box => {
+            if (box.id === this.state.currentId) { 
+                selectedBox = <Box key={box.id} box={box} selected={true} />;
+            } else {
+                unselectedBoxes.push(<Box key={box.id} box={box} selected={false} /> );
+            }
+        });
+        
+        const style = {
+            cursor: selectedBox ? 'pointer' : 'auto'
+        };
+        
         return (
             <div>
-                <svg width="550" height="550"
+                <svg width="550" height="550" style={style}
                      onMouseDown={(event) => this.onMouseDown(event)}
                      onMouseUp={(event) => this.onMouseUp(event)}
                      onMouseMove={(event) => this.onMouseMove(event)}
                 >
                     <g>
-                        {
-                            boxes.map((box, index) => <Box key={box.id} box={box}
-                                                           selected={box.id === this.state.currentId}/>)
-                        }
+                        { unselectedBoxes }
+                        { selectedBox }
                     </g>
                 </svg>
+                <p>Selected: {this.state.currentId}</p>
             </div>);
     }
 

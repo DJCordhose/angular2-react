@@ -26,9 +26,14 @@ export default class App extends React.Component {
 
     render() {
         const {segments, currentId} = this.state;
+		
+		 const style = {
+            cursor: currentId !== null ? 'pointer' : 'auto'
+        };
+		
         return (
             <div>
-                <svg width="550" height="550"
+                <svg style={style} width="550" height="550"
                      onMouseDown={(event) => this.onMouseDown(event)}
                      onMouseUp={(event) => this.onMouseUp(event)}
                      onMouseMove={(event) => this.onMouseMove(event)}
@@ -42,7 +47,9 @@ export default class App extends React.Component {
                                             containsSelected={containsSelected}/>;
                         })
                     }
+					{ currentId != null ? <use xlinkHref={`#${currentId}`} /> : null }
                 </svg>
+				<p>Current: {currentId}</p>
             </div>);
     }
 

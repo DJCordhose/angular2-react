@@ -3,6 +3,7 @@
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$/code/react/0-start" libraries="{angular2-react/code/react/0-start/node_modules}" />
     <file url="file://$PROJECT_DIR$/code/react/1-advanced-change-detection" libraries="{angular2-react/code/react/1-advanced-change-detection/node_modules}" />
+    <file url="file://$PROJECT_DIR$/code/react/2-universal-rendering" libraries="{angular2-react/code/react/2-universal-rendering/node_modules}" />
     <includedPredefinedLibrary name="ECMAScript 6" />
   </component>
 </project>

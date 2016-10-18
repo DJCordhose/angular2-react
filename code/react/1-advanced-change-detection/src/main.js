@@ -24,7 +24,7 @@ function createBoxes(number) {
     return boxes;
 }
 
-const boxes = createBoxes(20000);
+const boxes = createBoxes(2000);
 
 const mountNode: HTMLElement = document.getElementById('mount');
 ReactDOM.render(<App boxes={boxes} />, mountNode);

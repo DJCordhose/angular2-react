@@ -1,1 +1,1 @@
-How to integrate http://nvd3.org/?
+How to integrate 3rd party libraries like http://nvd3.org/?

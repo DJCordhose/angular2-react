@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "clean": "rm -rf dist/ public/dist/",
-    "webpack": "webpack",
+    "webpack": "webpack -p",
     "webpack:watch": "webpack && open public/index.html && webpack --watch",
     "devserver": "webpack-dev-server --progress --colors --content-base public",
     "check": "flow"

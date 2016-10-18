@@ -8,54 +8,8 @@ function getRandomInt(min, max) {
 }
 
 export default class App extends React.Component {
-    render() {
-        const {boxes} = this.state;
-        return (
-            <div>
-                <svg width="550" height="550"
-                     onMouseDown={(event) => this.onMouseDown(event)}
-                     onMouseUp={(event) => this.onMouseUp(event)}
-                     onMouseMove={(event) => this.onMouseMove(event)}
-                >
-                    <g>
-                        {
-                            boxes.map((box, index) => <Box key={box.id} box={box} selected={box.id === this.currentId} />)
-                        }
-                    </g>
-                </svg>
-            </div>);
-    }
-
-    onMouseDown(event) {
-        const id = Number(event.target.getAttribute("data-id"));
-        this.currentId = id;
-        const {boxes} = this.state;
-        const box = boxes[id];
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-        this.offsetX = box.x - mouseX;
-        this.offsetY = box.y - mouseY;
-    }
-    onMouseUp(event) {
-        this.currentId = null;
-    }
-    onMouseMove(event) {
-        if (this.currentId !== null) {
-            this.updateBox(this.currentId, event.clientX + this.offsetX, event.clientY + this.offsetY);
-        }
-    }
-
-    updateBox(id, x, y) {
-        const {boxes} = this.state;
-        const box = boxes[id];
-        box.x = x;
-        box.y = y;
-        this.setState({boxes});
-    }
-
     constructor(props) {
         super(props);
-        this.currentId = null;
         const {numberOfBoxes} = this.props;
         const boxes = [];
         for (let i=0; i < numberOfBoxes; i++) {
@@ -70,7 +24,61 @@ export default class App extends React.Component {
             boxes.push(box);
         }
         this.state = {
-            boxes
+            boxes,
+            currentId: null
         };
     }
+
+    render() {
+        const {boxes} = this.state;
+        return (
+            <div>
+                <svg width="550" height="550"
+                     onMouseDown={(event) => this.onMouseDown(event)}
+                     onMouseUp={(event) => this.onMouseUp(event)}
+                     onMouseMove={(event) => this.onMouseMove(event)}
+                >
+                    <g>
+                        {
+                            boxes.map((box, index) => <Box key={box.id} box={box}
+                                                           selected={box.id === this.state.currentId}/>)
+                        }
+                    </g>
+                </svg>
+            </div>);
+    }
+
+    onMouseDown(event) {
+        const id = Number(event.target.getAttribute("data-id"));
+        const {boxes} = this.state;
+        const box = boxes[id];
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+        this.offsetX = box.x - mouseX;
+        this.offsetY = box.y - mouseY;
+        this.setState({
+            currentId: id
+        })
+    }
+
+    onMouseUp(event) {
+        this.setState({
+            currentId: null
+        })
+    }
+
+    onMouseMove(event) {
+        if (this.state.currentId !== null) {
+            this.updateBox(this.state.currentId, event.clientX + this.offsetX, event.clientY + this.offsetY);
+        }
+    }
+
+    updateBox(id, x, y) {
+        const {boxes} = this.state;
+        const box = boxes[id];
+        box.x = x;
+        box.y = y;
+        this.setState({boxes});
+    }
+
 }

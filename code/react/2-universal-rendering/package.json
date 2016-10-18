@@ -4,7 +4,7 @@
   "scripts": {
     "clean": "rimraf ./public/dist",
     "server": "node ./src/server",
-    "start": "npm run clean &&  npm run server",
+    "start": "npm run clean && npm run webpack && npm run server",
     "webpack": "webpack -p",
     "webpack:watch": "webpack && open public/index.html && webpack --watch",
     "devserver": "webpack-dev-server --progress --colors --content-base public",

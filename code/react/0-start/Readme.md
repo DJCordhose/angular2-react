@@ -1,0 +1,1 @@
+Renders a lot of SVG elements

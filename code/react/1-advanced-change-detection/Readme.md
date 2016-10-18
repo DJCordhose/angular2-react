@@ -1,1 +1,1 @@
-Render a really large graph as SVG
+Uses advance change detection to make interactive with many SGV elements more smooth

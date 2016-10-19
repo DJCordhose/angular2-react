@@ -31,6 +31,10 @@ export default class App extends React.Component {
             cursor: currentId !== null ? 'pointer' : 'auto'
         };
 
+        let allBoxes = List();
+        segments.forEach(segment => allBoxes = allBoxes.concat(segment));
+        // console.log(`Number of boxes: ${allBoxes.size}`);
+
         return (
             <div>
                 <div style={{float: 'left'}}>
@@ -52,8 +56,8 @@ export default class App extends React.Component {
                     </svg>
                     <p>Current: {currentId}</p>
                 </div>
-                <div style={{float: 'right'}}>
-                    <Chart />
+                <div style={{float: 'left'}}>
+                    <Chart positions={allBoxes}/>
                 </div>
             </div>);
     }

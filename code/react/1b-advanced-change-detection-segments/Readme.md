@@ -1,3 +1,2 @@
-Uses advance change detection to make interactive with many SGV elements more smooth
-
-* https://facebook.github.io/react/docs/advanced-performance.html
+Introduces an artifical segmentation on the data and only updates the
+segment the moving box is in. Best performance.

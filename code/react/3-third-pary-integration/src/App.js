@@ -33,7 +33,7 @@ export default class App extends React.Component {
 
         let allBoxes = List();
         segments.forEach(segment => allBoxes = allBoxes.concat(segment));
-        // console.log(`Number of boxes: ${allBoxes.size}`);
+        console.log(`Number of boxes: ${allBoxes.size}`);
 
         return (
             <div>

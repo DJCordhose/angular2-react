@@ -24,6 +24,6 @@ Based on segmented model. Needs server, so can not be served directly from Githu
 http://nvd3.org/ displays a pie char of the distribution of the boxes demoing how to integrate 3rd party libraries. 
 Updates when boxes are moved around by using lifecyle method `componentWillReceiveProps`. 
 
-https://djcordhose.github.io/angular2-react/code/react/3-third-pary-integration/public
+https://djcordhose.github.io/angular2-react/code/react/3-third-party-integration/public
 
 

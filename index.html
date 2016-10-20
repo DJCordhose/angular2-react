@@ -173,7 +173,207 @@
                 </section>
 
                 <section>
+                    <h2>Example: SVG Boxes</h2>
+                    <a href="code/react/1b-advanced-change-detection-segments/public" target="_blank">
+                        <img src="screenshot_svg.png" height="500px">
+                    </a>
+                    <p>Move a single Box using D'n'D</p>
+                </section>
+
+                <section>
+                    <h2>A really mean example</h2>
+                    <p>Would be super fast using no framework at all (as only one box at a time needs update)</p>
+                    <p>Challenge is to execute as little code as possible when updating a single model of a box</p>
+                    <p>Model naturally is a flat list of boxes</p>
+                    <p>No natural hierarchy - which would make change detection easier</p>
+                </section>
+
+                <section>
+                    <h2>React</h2>
+                </section>
+
+                <section>
+                    <h2>Unoptimized Version</h2>
+                    <a href="code/react/0-start/public" target="_blank">
+                        <img src="screenshot_svg.png" height="500px">
+                    </a>
+                    <p>Even for 2000 boxes no fun, really laggy</p>
+                </section>
+
+                <section>
+                    <img src="yuss.jpg">
+                </section>
+
+                <section>
+                    <h2>Change Detection on Level of Virtual DOM</h2>
+                    <p>With every move of the mouse the full application (all boxes) are re-rendered</p>
+                    <p>Not as a DOM, but in a light weight structure called Virtual DOM</p>
+                    <p>Then only the difference of old and new Virtual DOM effects the real DOM</p>
+                </section>
+
+                <section>
+                    <h2>Change Detection on Level of Model</h2>
+                    <p><em>shouldComponentUpdate</em> is a lifecycle method on a component that can shortcut this procedure</p>
+                    <p>it can check old model against new model</p>
+                    <p>immutable data structures
+                        (<a href="https://facebook.github.io/immutable-js/" target="_blank">immutable.js</a>) can speed up the check</p>
+                </section>
+
+                <section>
+                    <h2>Optimized Version</h2>
+                    <a href="code/react/1-advanced-change-detection/public" target="_blank">
+                        <img src="screenshot_svg.png" height="500px">
+                    </a>
+                    <p>Just a tiny bit faster, as rendering a single box is fast anyway</p>
+                </section>
+
+                <section>
+                    <h3>The Box Component</h3>
+                <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+class Box extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    // simple check: every change to a box creates a new object
+    const changed = this.props.box !== nextProps.box;
+    return changed;
+  }
+
+  render() {
+    const {box, selected} = this.props;
+    if (selected) {
+      return &lt;rect data-id={box.id} width="10" height="10" x={box.x} y={box.y}
+                   stroke="red" fill="opaque" strokeWidth="2"/>;
+    } else {
+      return &lt;rect data-id={box.id} width="10" height="10" x={box.x} y={box.y}
+                   stroke="black" fill="transparent" strokeWidth="1"/>;
+    }
+  }
+}
+               </code></pre>
+                </section>
+
+                <section>
+                    <h2>Final Solution</h2>
+                    <p>We introduce an artificially segmented model</p>
+                    <p>each segment contains a number of boxes</p>
+                    <p>only the segment that contains the moving box needs to update</p>
+                    <p>makes change detection on model level much more efficient</p>
+                    <p>Code gets much more complicated, only do this if you really need to</p>
+                </section>
+
+
+                <section>
+                    <h3>Optimized by Segmented Model</h3>
+                    <a href="code/react/1b-advanced-change-detection-segments/public" target="_blank">
+                        <img src="screenshot_svg.png" height="500px">
+                    </a>
+                    <p>Really smooth for any amount of boxes</p>
+                </section>
+
+
+                <section>
                     <h1>Server Side Rendering / Universal Apps</h1>
+                </section>
+
+                <section>
+                    <h2>Single Page Application</h2>
+                    <a href=code/react/1b-advanced-change-detection-segments/public"
+                       target="_blank">
+                        <img src="screenshot_svg_spa.png" height="450px">
+                    </a>
+                    <p>First Page-Impression flickers with a standard SPA</p>
+                </section>
+
+                <section>
+                    <h3>Issues of Single-Page Applications</h3>
+                    <ul>
+                        <li>SEO
+                        <li>First-Page-Impressions
+                        <li>Preview, e.g.
+                            <ul>
+                                <li>of Search Results or
+                                <li>when sharing Links on Social Media
+                            </ul>
+                        </li>
+                        <!--<li>Progressive Enhancement-->
+                    </ul>
+                </section>
+
+                        <section>
+            <h3>Universal Rendering</h3>
+            <ul class="fragment">
+                <li>First-Page-Impressions rendered statically on server side for a selection of pages
+                <li>Probably includes index page
+                <li>Links being rendered into page as ordinary HTML-Links
+                <li>Pages being linked to can also be rendered statically on server
+                <li>application code is shared between Server and Client</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Server Side Code</h3>
+<pre><code data-trim contenteditable class="javascript line-numbers">
+  const boxes = createBoxes(2000);
+  const html =
+  renderToString(
+      &lt;App boxes={boxes}/>
+  );
+  reply(renderFullPage(html, boxes));
+</code></pre>
+        </section>
+
+            <section>
+                    <h3>How to transfer state from Server to Client?</h3>
+<pre><code data-trim contenteditable class="html line-numbers">
+&lt!-- server -->
+function renderFullPage(html, initialData) {
+  return `
+&lt;html>
+  &lt;body>
+    &lt;div id="mount">${html}&lt;/div>
+    &lt;/body>
+
+  &lt;script>
+    window.__INITIAL_STATE__ = ${JSON.stringify(initialData)};
+  &lt;/script>
+&lt;/html>
+`;
+}</code></pre>
+<pre><code data-trim contenteditable class="javascript line-numbers" data-leftpad>
+const boxes = window.__INITIAL_STATE__;
+ReactDOM.render(&lt;App boxes={boxes}/>, document.getElementById('mount'));
+</code></pre>
+                </section>
+            <section>
+                <h3>How to suppress ein Re-Rendering on Client?</h3>
+                <div>
+                    <img src="universal-checksum.png">
+                </div>
+                <p>When Checksums on Server and Client side match, React does not re-render</p>
+            </section>
+
+                <section>
+                    <h2>Universal Rendering</h2>
+                    <a href="http://localhost:3000" target="_blank">
+                        <img src="screenshot_svg_universal.png" height="450px">
+                    </a>
+                    <p>Rendering on the server is not very fast either, but at least no flickering</p>
+                </section>
+
+                <section>
+                    <h3>Universal Rendering for the Win</h3>
+                    <ul>
+                        <li><em>SEO</em>: Solved, as page fully rendering without JavaScript
+                        <li ><em>First-Page-Impressions</em>: Fast, as rendered on Server Side and JavaScript can be loaded later, no re-rendering
+                        <li ><em>Preview</em>: Solved, page fully rendered on Server Side
+                        <li ><em>Progressive Enhancement</em>: As Links are ordinary HTML Links, page can at least deliver all contents
+                    </ul>
+                </section>
+
+                <section>
+                    <a target="_blank"
+                       href="https://twitter.com/mxstbr/status/776812185276284928">
+                        <img src="twitter_universal.png">
+                    </a>
                 </section>
 
                 <section>
@@ -181,7 +381,77 @@
                 </section>
 
                 <section>
+                    <h2>3rd Party libraries?</h2>
+                    <p>There are a lot of 3rd party libraries around</p>
+                    <p>They are typically not written in the framewor of your choice</p>
+                    <p>Examples</p>
+                    <p><em>jQuery</em> and <em>jQuery</em> plugins like <em>Bootstrap</em></p>
+                    <p><em>d3</em> for interactive SVGs and more abstract charting libs like <em>nvd3</em></p>
+                </section>
+
+                <section>
+                    <h3>Our example: Distribution of boxes</h3>
+                    <a href="code/react/3-third-party-integration/public" target="_blank">
+                        <img src="screenshot_3rd_party.png">
+                    </a>
+                    <p><em>nvd3</em> pie chart using <em>d3</em></p>
+                </section>
+                <section>
+                    <h3>The Chart Component</h3>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+export default class Chart extends React.Component {
+    render() {
+        // we render an empty svg and remember the reference to the DOM node
+        return &lt;svg className="with-3d-shadow with-transitions"
+                        ref={c => this._chart = c}></svg>
+    }
+    componentDidMount() {
+        // once rendered by react we create the nvd3 chart
+        const data = calculateDistributionData(this.props.positions);
+        createNvd3Chart(this._chart, data);
+    }
+    shouldComponentUpdate() {
+        // once rendered react never renders again
+        return false;
+    }
+    componentWillReceiveProps(nextProps) {
+        // we still get updates of properties making it reactive
+        const data = calculateDistributionData(this.props.positions);
+        updateNvd3Chart(this._chart, data);
+    }
+}
+               </code></pre>
+                </section>
+
+                <section>
+                    <h3>How does the 3rd party code look like?</h3>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+import d3 from 'd3';
+import nv from 'nvd3';
+
+function createNvd3Chart(svg, data) {
+    nv.addGraph(() => {
+        const chart = nv.models.pieChart()
+            .x(function(d) { return d.label })
+            .y(function(d) { return d.value })
+            .showLabels(true);
+
+        d3.select(svg)
+            .datum(data)
+            .transition().duration(350)
+            .call(chart);
+        return chart;
+    });
+}
+               </code></pre>
+                </section>
+
+
+                <section>
                     <h1>Scope Of framework</h1>
+<!-- - Complete Framework-->
+<!-- - Large API Surface-->
+<!-- - Template style-->
                 </section>
 
                 <!--<section>-->

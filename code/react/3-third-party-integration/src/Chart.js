@@ -62,10 +62,15 @@ export default class Chart extends React.Component {
         const {positions} = this.props;
         const data = calculateDistributionData(positions);
         // console.log(`Props have changed ${JSON.stringify(data)}`);
-        d3.select(this._chart)
+        this._d3selection
             .datum(data)
             .transition().duration(350)
             .call(this._nvd3chart);
+        // TODO: chart looses its use state when updating data
+        // this._nvd3chart.dispatch.stateChange(data);
+        // this._nvd3chart
+        //     .datum(data)
+        //     .dispatch.changeState
     }
 
     componentDidMount() {
@@ -79,7 +84,8 @@ export default class Chart extends React.Component {
                 .y(function(d) { return d.value })
                 .showLabels(true);
 
-            d3.select(this._chart)
+            this._d3selection = d3.select(this._chart);
+            this._d3selection
                 .datum(data)
                 .transition().duration(350)
                 .call(chart);

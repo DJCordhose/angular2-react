@@ -404,25 +404,35 @@ ReactDOM.render(&lt;App boxes={boxes}/>, document.getElementById('mount'));
                     </a>
                     <p><em>nvd3</em> pie chart using <em>d3</em></p>
                 </section>
+
+                <section>
+                    <h3>Challenges</h3>
+                    <ol>
+                        <li>How to get access to the DOM node of the component?
+                        <li>How do we tell the framework that rendering is on us?
+                        <li>When exactly do we take over rendering?
+                        <li>How to we still get updates?
+                    </ol>
+                </section>
                 <section>
                     <h3>The Chart Component</h3>
                     <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
 export default class Chart extends React.Component {
     render() {
-        // we render an empty svg and remember the reference to the DOM node
+        // (1) we render an empty svg and remember the reference to the DOM node
         return &lt;svg ref={c => this._chart = c}>&lt;/svg>
     }
+    shouldComponentUpdate() {
+        // (2) once rendered react never renders again
+        return false;
+    }
     componentDidMount() {
-        // once rendered by react we create the nvd3 chart
+        // (3) once rendered by react we create the nvd3 chart
         const data = calculateDistributionData(this.props.positions);
         createNvd3Chart(this._chart, data);
     }
-    shouldComponentUpdate() {
-        // once rendered react never renders again
-        return false;
-    }
     componentWillReceiveProps(nextProps) {
-        // we still get updates of properties making it reactive
+        // (4) we still get updates of properties making it reactive
         const data = calculateDistributionData(nextProps.positions);
         updateNvd3Chart(this._chart, data);
     }

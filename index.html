@@ -410,8 +410,7 @@ ReactDOM.render(&lt;App boxes={boxes}/>, document.getElementById('mount'));
 export default class Chart extends React.Component {
     render() {
         // we render an empty svg and remember the reference to the DOM node
-        return &lt;svg className="with-3d-shadow with-transitions"
-                        ref={c => this._chart = c}></svg>
+        return &lt;svg ref={c => this._chart = c}>&lt;/svg>
     }
     componentDidMount() {
         // once rendered by react we create the nvd3 chart
@@ -456,10 +455,23 @@ function createNvd3Chart(svg, data) {
 
 
                 <section>
-                    <h1>Scope Of framework</h1>
-<!-- - Complete Framework-->
-<!-- - Large API Surface-->
-<!-- - Template style-->
+                    <h2>Scope Of Framework</h2>
+                    <ul>
+                        <li>React
+                            <ul>
+                                <li>just the rendering lib
+                                <li>small API surface
+                                <li>often needs additional libraries (e.g. type checking, routing)</li>
+                            </ul>
+                        </li>
+                        <li>Angular
+                            <ul>
+                                <li>complete framework (batteries included)</li>
+                                <li>large API Surface</li>
+                                <li>helps you with a lot of decisions</li>
+                            </ul>
+                        </li>
+                    </ul>
                 </section>
 
                 <!--<section>-->

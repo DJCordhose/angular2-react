@@ -59,7 +59,7 @@ export default class Chart extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         // will be called even when shouldComponentUpdate returns false
-        const {positions} = this.props;
+        const {positions} = nextProps;
         const data = calculateDistributionData(positions);
         // console.log(`Props have changed ${JSON.stringify(data)}`);
         this._d3selection

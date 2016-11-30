@@ -423,7 +423,7 @@ export default class Chart extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         // we still get updates of properties making it reactive
-        const data = calculateDistributionData(this.props.positions);
+        const data = calculateDistributionData(nextProps.positions);
         updateNvd3Chart(this._chart, data);
     }
 }

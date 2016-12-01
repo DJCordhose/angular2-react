@@ -1,7 +1,7 @@
 // https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html
 import {
   Component, OnInit, OnChanges, AfterViewInit, DoCheck, SimpleChanges, Inject, ElementRef, ViewChild,
-  Input, ChangeDetectionStrategy, IterableDiffers
+  Input, ChangeDetectionStrategy, IterableDiffers, IterableDiffer
 } from '@angular/core';
 // import * as d3 from 'd3';
 // import * as nv from 'nvd3';
@@ -21,8 +21,8 @@ export default class Chart implements OnInit, /*OnChanges, */AfterViewInit, DoCh
   private _chart: HTMLElement;
   private _d3selection: any;
   private _nvd3chart: any;
-  private _differ: any;
-  private _differs: any;
+  private _differ: IterableDiffer;
+  private _differs: IterableDiffers;
   @Input() positions: any[];
 
 
@@ -37,7 +37,6 @@ export default class Chart implements OnInit, /*OnChanges, */AfterViewInit, DoCh
 
   ngOnInit() {
     // console.log(`ngOnInit: ${this._chart}`);
-    // does this make any sense???
     this._differ = this._differs.find(this.positions).create(null);
   }
 

@@ -47,6 +47,9 @@
             code span.line-number {
                 color: lightcoral;
             }
+            .reveal pre code {
+                max-height: 1000px !important;
+            }
 
         </style>
 
@@ -415,9 +418,9 @@ ReactDOM.render(&lt;App boxes={boxes}/>, document.getElementById('mount'));
                     </ol>
                 </section>
                 <section>
-                    <h3>The Chart Component</h3>
+                    <h3>React Chart Component</h3>
                     <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
-export default class Chart extends React.Component {
+class Chart extends React.Component {
     render() {
         // (1) we render an empty svg and remember the reference to the DOM node
         return &lt;svg ref={c => this._chart = c}>&lt;/svg>
@@ -436,6 +439,40 @@ export default class Chart extends React.Component {
         const data = calculateDistributionData(nextProps.positions);
         updateNvd3Chart(this._chart, data);
     }
+}
+               </code></pre>
+                </section>
+                <section>
+                    <h3>Angular Chart Component</h3>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+@Component({
+  template: `<svg></svg>`,
+  // (2) position array will never change, so this effectively disables re-draw
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+class Chart implements AfterViewInit, DoCheck {
+  private _chart: HTMLElement;
+  private _differ: IterableDiffer;
+  @Input() positions: any[];
+
+  // (1) getting access to the native DOM node
+  constructor(@Inject(ElementRef) elementRef: ElementRef, differs: IterableDiffers) {
+    this._chart = elementRef.nativeElement;
+    this._differ = differs.find(this.positions).create(null);
+  }
+
+  // (3) now we are in charge of rendering
+  ngAfterViewInit() {
+    createNvd3Chart(this._chart, this.positions);
+  }
+
+  // (4) ngOnChanges won't, but we can handle it low level
+  ngDoCheck() {
+    const changes = this._differ.diff(this.positions);
+    if (changes) {
+      updateNvd3Chart(this._chart, this.positions);
+    }
+  }
 }
                </code></pre>
                 </section>

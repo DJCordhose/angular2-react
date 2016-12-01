@@ -1,4 +1,5 @@
 // https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html
+// http://juristr.com/blog/2016/04/angular2-change-detection/
 import {
   Component, OnInit, OnChanges, AfterViewInit, DoCheck, SimpleChanges, Inject, ElementRef, ViewChild,
   Input, ChangeDetectionStrategy, IterableDiffers, IterableDiffer

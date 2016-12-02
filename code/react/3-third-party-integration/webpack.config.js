@@ -8,7 +8,12 @@ module.exports = {
         "./src/main.js"
     ],
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
+        })
     ],
     output:  {
         // output path

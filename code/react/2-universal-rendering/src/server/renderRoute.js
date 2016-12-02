@@ -1,11 +1,11 @@
 import React from 'react';
-import { renderToString } from 'react-dom/server';
+import {renderToString} from 'react-dom/server';
 
 import App from '../common/App';
-import { createBoxes } from '../common/util';
+import {createBoxes} from '../common/util';
 
 function renderFullPage(html, initialData) {
-  return `
+    return `
 <html>
   <body>
     <div id="mount">${html}</div>
@@ -18,18 +18,18 @@ function renderFullPage(html, initialData) {
 </html>`;
 }
 
-export default function(request, reply) {
+export default function (numberOfBoxes) {
     const numberOfSegments = 10;
-    const boxes = createBoxes(2000);
+    const boxes = createBoxes(numberOfBoxes);
     const data = {
         boxes,
         numberOfSegments
     };
 
     const html =
-    renderToString(
-        <App boxes={boxes} numberOfSegments={100}/>
-    );
-  reply(renderFullPage(html, data));
+        renderToString(
+            <App boxes={boxes} numberOfSegments={100}/>
+        );
+    return renderFullPage(html, data);
 };
 

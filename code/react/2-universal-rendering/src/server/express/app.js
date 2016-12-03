@@ -7,7 +7,7 @@ import renderRoute from '../renderRoute';
 const publicPath = path.join(__dirname, '/../../../public');
 
 app.get('/', function (req, res) {
-    const html = renderRoute(2000);
+    const html = renderRoute(5000);
     res.send(html);
 });
 

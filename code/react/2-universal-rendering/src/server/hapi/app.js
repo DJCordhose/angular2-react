@@ -20,7 +20,7 @@ server.route({
     method: 'GET',
     path: '/',
     handler: (request, reply) => {
-        const html = renderRoute(2000);
+        const html = renderRoute(5000);
         reply(html);
     }
 });

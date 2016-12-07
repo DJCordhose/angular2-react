@@ -24,7 +24,7 @@ function createBoxes(number) {
     return boxes;
 }
 
-const boxes = createBoxes(5000);
+const boxes = createBoxes(50);
 
 const mountNode: HTMLElement = document.getElementById('mount');
-ReactDOM.render(<App boxes={boxes} numberOfSegments={100}/>, mountNode);
+ReactDOM.render(<App boxes={boxes} />, mountNode);

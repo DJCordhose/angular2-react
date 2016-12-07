@@ -3,99 +3,60 @@
 import React from 'react';
 import {List} from 'immutable';
 
-import Segment from './Segment';
+import Box from './Box';
 import Chart from './Chart';
+
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
-        const {boxes, numberOfSegments} = this.props;
-        const numberOfBoxes = boxes.length;
-        const immutableBoxes = List(boxes); // eslint-disable-line new-cap
-        const segmentSize = numberOfBoxes / numberOfSegments;
-        const segmentsArray = [];
-        for (let i = 0; i < numberOfSegments; i++) {
-            const segment = immutableBoxes.slice(segmentSize * i, segmentSize * (i + 1));
-            segmentsArray.push(segment);
-        }
+        const {boxes} = this.props;
         this.state = {
-            segments: List(segmentsArray), // eslint-disable-line new-cap
+            boxes: List(boxes),  // eslint-disable-line new-cap
             currentId: null
         };
     }
 
     render() {
-        const {segments, currentId} = this.state;
-
+        const {boxes, currentId} = this.state;
+        
+        let unselectedBoxes = [];
+        let selectedBox;
+        
+        boxes.forEach(box => {
+            if (box.id === this.state.currentId) { 
+                selectedBox = <Box key={box.id} box={box} selected={true} />;
+            } else {
+                unselectedBoxes.push(<Box key={box.id} box={box} selected={false} /> );
+            }
+        });
+        
         const style = {
-            cursor: currentId !== null ? 'pointer' : 'auto'
+            cursor: selectedBox ? 'pointer' : 'auto'
         };
-
-        let allBoxes = List();
-        segments.forEach(segment => allBoxes = allBoxes.concat(segment));
-        console.log(`Number of boxes: ${allBoxes.size}`);
-
+        
         return (
             <div>
+                <svg width="550" height="550" style={style}
+                     onMouseDown={(event) => this.onMouseDown(event)}
+                     onMouseUp={(event) => this.onMouseUp(event)}
+                     onMouseMove={(event) => this.onMouseMove(event)}
+                >
+                    <g>
+                        { unselectedBoxes }
+                        { selectedBox }
+                    </g>
+                </svg>
                 <div style={{float: 'left'}}>
-                    <svg style={style} width="550" height="550"
-                         onMouseDown={(event) => this.onMouseDown(event)}
-                         onMouseUp={(event) => this.onMouseUp(event)}
-                         onMouseMove={(event) => this.onMouseMove(event)}
-                    >
-                        {
-                            segments.map((segment, index) => {
-                                const containsSelected = currentId !== null && this.find(currentId).segment === segment;
-                                return <Segment key={index}
-                                                boxes={segment}
-                                                currentId={currentId}
-                                                containsSelected={containsSelected}/>;
-                            })
-                        }
-                        { currentId != null ? <use xlinkHref={`#${currentId}`}/> : null }
-                    </svg>
-                    <p>Current: {currentId}</p>
-                </div>
-                <div style={{float: 'left'}}>
-                    <Chart positions={allBoxes}/>
+                    <Chart positions={boxes} dragInProgress={currentId !== null}/>
                 </div>
             </div>);
     }
 
-    getBox(id) {
-        const data = this.find(id);
-        return data ? data.box : null;
-    }
-
-    find(id) {
-        const {segments} = this.state;
-        let data = null;
-        segments.some((segment, index) => {
-            const firstElementAt = index * segment.size;
-            const effectiveIndex = id - firstElementAt;
-            if (effectiveIndex > 0 && effectiveIndex < segment.size) {
-                const box = segment.get(effectiveIndex);
-                if (box) {
-                    data = {
-                        effectiveIndex,
-                        box,
-                        segment,
-                        index
-                    };
-                    return true;
-                }
-            }
-        });
-        return data;
-    }
-
     onMouseDown(event) {
         const id = Number(event.target.getAttribute("data-id"));
-        const box = this.getBox(id);
-        if (!box) {
-            console.error(`No box found for id ${id}`);
-            return;
-        }
+        const {boxes} = this.state;
+        const box = boxes.get(id);
         const mouseX = event.clientX;
         const mouseY = event.clientY;
         this.offsetX = box.x - mouseX;
@@ -118,17 +79,15 @@ export default class App extends React.Component {
     }
 
     updateBox(id, x, y) {
+        const {boxes} = this.state;
         const modifiedBox = {
             id,
             x,
             y
         };
-        const {segment, index, effectiveIndex} = this.find(id);
-        const modifiedSegment = segment.set(effectiveIndex, modifiedBox);
-        const {segments} = this.state;
-        const modifiedSegments = segments.set(index, modifiedSegment);
+        const modifiedBoxes = boxes.set(id, modifiedBox);
         this.setState({
-            segments: modifiedSegments
+            boxes: modifiedBoxes
         });
     }
 

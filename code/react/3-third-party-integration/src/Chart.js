@@ -12,6 +12,11 @@ export default class Chart extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        const {dragInProgress} = nextProps;
+        if (dragInProgress) {
+            return;
+        }
+        console.log('Updating diagramm');
         // will be called even when shouldComponentUpdate returns false
         const {positions} = nextProps;
         const data = calculateDistributionData(positions);

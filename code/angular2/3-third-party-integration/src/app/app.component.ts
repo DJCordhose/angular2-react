@@ -5,7 +5,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-const numberOfBoxes = 5000;
+const numberOfBoxes = 50;
 
 @Component({
   selector: 'app-root',
@@ -38,7 +38,7 @@ export class AppComponent {
 
 
   ngOnInit() {
-    for (let i=0; i < 5000; i++) {
+    for (let i=0; i < numberOfBoxes; i++) {
       const id = i;
       const x = getRandomInt(0, 500);
       const y = getRandomInt(0, 500);

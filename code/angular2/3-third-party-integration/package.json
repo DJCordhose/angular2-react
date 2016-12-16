@@ -7,6 +7,8 @@
     "start": "ng serve",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
+    "build:prod": "ng build --target=production --base-href ./ --aot",
+    "build:dev": "ng build --target=development --base-href ./",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor"
   },

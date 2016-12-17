@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Angular 2 and React</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="reveal.js/css/reveal.css">
+        <!--<link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">-->
+        <!--<link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">-->
+
+        <!--<link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">-->
+        <!--<link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme">-->
+		<!--<link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">-->
+        <!--<link rel="stylesheet" href="reveal.js/css/theme/sky.css" id="theme">-->
+        <link rel="stylesheet" href="reveal.js/css/theme/serif.css" id="theme">
+
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+		<style>
+			/*pre code {*/
+				/*display: block;*/
+				/*padding: 0.5em;*/
+				/*background: #FFFFFF !important;*/
+				/*color: #000000 !important;*/
+			/*}*/
+			/*.right-img {*/
+				/*margin-left: 10px !important;*/
+				/*float: right;*/
+				/*height: 500px;*/
+			/*}*/
+            .todo:before {
+                content: 'TODO: ';
+            }
+            .todo {
+                color: red !important;
+            }
+            code span.line-number {
+                color: lightcoral;
+            }
+            .reveal pre code {
+                max-height: 1000px !important;
+            }
+            code span.line-number {
+                color: lightcoral;
+            }
+            .reveal h1,
+            .reveal h2,
+            .reveal h3,
+            .reveal h4,
+            .reveal h5,
+            .reveal h6 {
+                color: #101010 !important;
+            }
+
+            .reveal a {
+                color: #31280D;
+            }
+
+        </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="reveal.js/lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+                <section>
+                    <h2>Angular and React: Make code not war</h2>
+                    <p>
+                        <small><a href="http://zeigermann.eu">Oliver Zeigermann</a> / <a href="http://twitter.com/djcordhose">@DJCordhose</a>
+                        </small>
+                    </p>
+
+                    <p><a href="https://www.meetup.com/Hamburg-AngularJS-Meetup/events/234414320/">
+                        Hamburg AngularJS Meetup, Wednesday, January 11, 2017
+                    </a></p>
+
+                    <p>Slides:
+                        <a href="https://djcordhose.github.io/angular2-react/2017_angular_hh_meetup.html">
+                            https://djcordhose.github.io/angular2-react/2017_angular_hh_meetup.html
+                        </a></p>
+                </section>
+
+                <section>
+                    <h1>Topic I</h1>
+                    <h2>Application architecture</h2>
+                </section>
+
+                <section>
+                    <h3>Smart/Dumb, Parent/Child, Controller/View</h3>
+                    <p>Different names for the same concept:</p>
+                    <ol>
+                        <li>pass data down from smart component</li>
+                        <li>events in dumb component cause actions in smart component</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h3>A simple example</h3>
+                    <a href="code/angular2/parent-child/dist" target="_blank">
+                    <img src="screenshot_hello_world.png">
+                    </a>
+
+                </section>
+
+                <section>
+                    <h3>The dumb component</h3>
+                    <p>Gets data via <em>@Input</em></p>
+                    <p>Signals change via <em>@Output</em></p>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+@Component({...})
+class SubComponent {
+  @Input() greeting: string;
+  @Output() onSend = new EventEmitter();
+  reset(input: HTMLInputElement) {
+    this.greeting = '';
+    input.focus();
+  }
+
+  send() {
+    this.onSend.emit(this.greeting);
+  }
+}
+                    </code></pre>
+                    <p>At most contains simple and local UI logic</p>
+                </section>
+
+                <section>
+                    <h3>The smart component</h3>
+                    <p>Passes down data via <em>greeting</em> property</p>
+                    <p>Passed down callback via <em>onSend</em></p>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+@Component({
+  selector: 'app-root',
+  template: `<sub greeting={{greeting}} (onSend)="sent($event)">
+             </sub>`
+})
+class AppComponent {
+  greeting = 'Hiho';
+
+  sent(greeting) {
+    console.log(`Sent: ${greeting}`);
+    this.greeting = `${greeting}, and you!`
+  }
+}
+                    </code></pre>
+                    <p>Contains all business logic (in sent)</p>
+                </section>
+
+                <section>
+                    <h2>Idea is totally framework agnostic</h2>
+                    <h3>Same thing in React</h3>
+                </section>
+
+                <section>
+                    <h3>The smart component in React</h3>
+                    <p>Passes down data via <em>greeting</em> property</p>
+                    <p>Passed down callback via <em>onSend</em></p>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+class HelloMessage extends React.Component {
+    render() {
+        return <Greeter greeting={this.state.greeting} onSend={(greeting) => this.sent(greeting)}/>;
+    }
+    constructor(props) {
+        super(props);
+        this.state = {greeting: this.props.greeting};
+    }
+
+    sent(greeting) {
+        console.log(`Sent: ${greeting}`);
+        this.setState({greeting: `${greeting}, and you!`});
+    }
+}
+                    </code></pre>
+                    <p>Contains all business logic (in sent)</p>
+                </section>
+
+                <section>
+                    <h3>The dumb component in React</h3>
+                    <p>Gets data via <em>this.props.greeting</em></p>
+                    <p>Signals change via <em>this.props.onSend</em></p>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+class Greeter extends React.Component {
+    render() {
+        return <div>...</div>);
+    }
+    send() {
+        this.props.onSend(this.state.greeting);
+    }
+    reset() {
+        this.setState({greeting: ""});
+        this.refs.in.focus();
+    }
+    updateModel(event) {
+        this.setState({greeting: event.target.value});
+    }
+}
+                    </code></pre>
+                    <p>Template is just JavaScript, no two way binding (updateModel needed to update model)</p>
+                </section>
+
+                <section>
+                    <h1>Topic II</h1>
+                    <h2>Advanced Change Detection</h2>
+                </section>
+
+                <section>
+                    <h3>Example: SVG Boxes</h3>
+                    <a href="code/vanilla" target="_blank">
+                        <img src="screenshot_svg.png" height="500px">
+                    </a>
+                    <p>Move a single Box using D'n'D</p>
+                </section>
+
+                <!--<section>-->
+                    <!--<h2>Overview</h2>-->
+                    <!--<p><a href="http://teropa.info/blog/2015/03/02/change-and-its-detection-in-javascript-frameworks.html" target="_blank">-->
+                        <!--Change And Its Detection In JavaScript Frameworks-->
+                    <!--</a></p>-->
+                <!--</section>-->
+
+                <section>
+                    <h2>A really mean example</h2>
+                    <p>Super fast using no framework at all (as only one box at a time needs update)</p>
+                    <p>Overhead introduced by framework makes application slow</p>
+                    <p>Challenge is to execute as little code as possible when updating a single model of a box</p>
+                    <p>Model naturally is a flat list of boxes</p>
+                    <p>No natural hierarchy - which would make change detection easier</p>
+                </section>
+
+                <section>
+                    <h2>React</h2>
+                </section>
+
+                <section>
+                    <h3>Unoptimized Version</h3>
+                    <a href="code/react/0-start/public" target="_blank">
+                        <img src="screenshot_svg.png" height="500px">
+                    </a>
+                    <p>Even for 5000 boxes no fun, really laggy</p>
+                </section>
+
+                <section>
+                    <img src="yuss.jpg">
+                </section>
+
+                <section>
+                    <h2>Change Detection on Level of Virtual DOM</h2>
+                    <p>With every move of the mouse the full application (all boxes) are re-rendered</p>
+                    <p>Not as a DOM, but in a light weight structure called Virtual DOM</p>
+                    <p>Then only the difference of old and new Virtual DOM effects the real DOM</p>
+                </section>
+
+                <section>
+                    <h2>Change Detection on Level of Model</h2>
+                    <p><em>shouldComponentUpdate</em> is a lifecycle method on a component that can shortcut this procedure</p>
+                    <p>it can check old model against new model</p>
+                    <p>immutable data structures
+                        (<a href="https://facebook.github.io/immutable-js/" target="_blank">immutable.js</a>) can speed up the check</p>
+                </section>
+
+                <section>
+                    <h3>The Box Component in React</h3>
+                <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+class Box extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    // simple check: every change to a box creates a new object
+    const changed = this.props.box !== nextProps.box;
+    return changed;
+  }
+
+  render() {
+    const {box} = this.props;
+    return &lt;rect data-id={box.id} x={box.x} y={box.y}
+                 width="10" height="10"
+                 stroke="black" fill="transparent" strokeWidth="1"/>;
+  }
+}
+               </code></pre>
+                </section>
+
+                <section>
+                    <h3>Optimized Version</h3>
+                    <a href="code/react/1-advanced-change-detection/public" target="_blank">
+                        <img src="screenshot_svg.png" height="450px">
+                    </a>
+                </section>
+
+        <section>
+          <h2>Angular Change Detection</h2>
+          <p>Angular allows us to control a component's <strong>ChangeDetectionStrategy</strong></p>
+            <ul>
+              <li><strong>Skips subtrees</strong> for change detection if set to <strong>OnPush</strong> and no inputs have changed</li>
+              <li>Requires <strong>immutable data structures</strong></li>
+            </ul>
+        </section>
+
+                <section>
+                    <h3>The Box Component in Angular</h3>
+                    <pre><code data-trim contenteditable class=" typescript line-numbers" data-leftpad>
+@Component({
+  selector: '[square-box]',
+  template: `
+    &lt;svg:rect [attr.dataId]="box.id" [attr.x]="box.x"[attr.y]="box.y"
+      width="10" height="10"
+      stroke="black" fill="transparent" strokeWidth="1">&lt;/svg:rect>
+  `,
+  // dirty check for sub-components disabled
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class SquareBoxComponent {
+  @Input() box;
+}
+               </code></pre>
+                </section>
+
+                <section>
+                    <h2>Performance</h2>
+                    <p><strong>Similar</strong> for Angular and React <strong>w/o optimization</strong> and
+                        <strong>w optimization</strong></p>
+                    <p>With optimization about twice as fast</p>
+                    <p>Often optimization brings more, as rendering a single box is fast anyway</p>
+                </section>
+
+                <section>
+                    <h1>Topic III</h1>
+                    <h2>Integration of 3rd party libraries</h2>
+                </section>
+
+                <section>
+                    <h2>3rd Party libraries?</h2>
+                    <p>There are a lot of 3rd party libraries around</p>
+                    <p>They are typically not written in the framework of your choice</p>
+                    <p>Examples</p>
+                    <p><em>jQuery</em> and <em>jQuery</em> plugins like <em>Bootstrap</em></p>
+                    <p><em>d3</em> for interactive SVGs and more abstract charting libs like <em>nvd3</em></p>
+                </section>
+
+                <section>
+                    <h3>Our example: Distribution of boxes</h3>
+                    <a href="code/angular2/3-third-party-integration/dist" target="_blank">
+                        <img src="screenshot_3rd_party.png">
+                    </a>
+                    <p><em>nvd3</em> pie chart using <em>d3</em></p>
+                </section>
+
+                <section>
+                    <h3>Challenges</h3>
+                    <ol>
+                        <li>How to get access to the DOM node of the component?
+                        <li>How do we tell the framework that rendering is on us?
+                        <li>When exactly do we take over rendering?
+                        <li>How to we still get updates?
+                    </ol>
+                </section>
+                <section>
+                    <h4>React Chart Component</h4>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+class Chart extends React.Component {
+    render() {
+        // (1) we render an empty svg and remember the reference to the DOM node
+        return &lt;svg ref={c => this._chart = c}>&lt;/svg>
+    }
+    shouldComponentUpdate() {
+        // (2) once rendered react never renders again
+        return false;
+    }
+    componentDidMount() {
+        // (3) once rendered by react we create the nvd3 chart
+        const data = calculateDistributionData(this.props.positions);
+        createNvd3Chart(this._chart, data);
+    }
+    componentWillReceiveProps(nextProps) {
+        // (4) we still get updates of properties making it reactive
+        const data = calculateDistributionData(nextProps.positions);
+        updateNvd3Chart(this._chart, data);
+    }
+}
+               </code></pre>
+                </section>
+                <section>
+                    <h4>Angular Chart Component</h4>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+@Component({
+  template: `<svg #chart></svg>`,
+  // (2) position array will never change, so this effectively disables re-draw
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+class Chart implements AfterViewInit, DoCheck {
+  // (1) getting access to the native DOM node
+  @ViewChild('chart') private chart: ElementRef;
+  private _differ: IterableDiffer;
+
+  constructor(differs: IterableDiffers) {
+    this._differ = differs.find(this.positions).create(null);
+  }
+  // (3) now we are in charge of rendering
+  ngAfterViewInit() {
+    createNvd3Chart(this._chart.nativeElement, this.positions);
+  }
+  // (4) ngOnChanges won't, but we can handle it low level
+  ngDoCheck() {
+    const changes = this._differ.diff(this.positions);
+    if (changes) {
+      updateNvd3Chart(this._chart.nativeElement, this.positions);
+    }
+  }
+}
+               </code></pre>
+                </section>
+
+                <section>
+                    <h2>Scope Of Framework</h2>
+                    <ul>
+                        <li class="fragment">React
+                            <ul>
+                                <li>just the rendering lib
+                                <li>small API surface
+                                <li>often needs additional libraries (e.g. type checking, routing)</li>
+                            </ul>
+                        </li>
+                        <li class="fragment">Angular
+                            <ul>
+                                <li>complete framework (batteries included)</li>
+                                <li>large API Surface</li>
+                                <li>helps you with a lot of decisions</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Conclusion</h2>
+                    <ul>
+                        <li>React and Angular 2 provide similar solutions to our challenges</li>
+                        <li>Learning to do one thing in one of them can teach you about the other</li>
+                    </ul>
+                    <p class="fragment">Bottom Line: Angular 2 gives you the full stack, React gives you choices</p>
+                </section>
+
+
+                <section>
+            <h1>Thank you!</h1>
+
+            <!--<h2>Questions / Discussion</h2>-->
+            <!--<p>-->
+                <!--<a href="http://zeigermann.eu">Oliver Zeigermann</a> / <a href="http://twitter.com/djcordhose">@DJCordhose</a>-->
+
+            <!--</p>-->
+            <!--<p><a href="http://bit.ly/spa-frameworks">-->
+                <!--http://bit.ly/spa-frameworks-->
+            <!--</a></p>-->
+
+        </section>
+
+                </div>
+
+		<script src="reveal.js/lib/js/head.min.js"></script>
+		<script src="reveal.js/js/reveal.js"></script>
+        <script src="lib/jquery-2.2.4.js"></script>
+    <script>
+//        $('section').attr('data-background-image', "backgrounds/dark-sky.jpg");
+        $('section').attr('data-background-image', "backgrounds/light-sky.jpg");
+
+    </script>
+    <script>
+        // only presentation version has fragments
+        if (window.location.hostname.indexOf('localhost') === -1) {
+            $('.fragment').removeClass('fragment');
+        }
+    </script>
+
+
+    <script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+					{ src: 'reveal.js/plugin/notes/notes.js', async: true },
+                    { src: 'lib/js/line-numbers.js'}
+                ]
+			});
+
+		</script>
+
+	</body>
+</html>

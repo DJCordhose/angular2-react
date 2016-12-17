@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class HelloMessage extends React.Component {
+export default class Greeter extends React.Component {
     render() {
         return (
             <div>

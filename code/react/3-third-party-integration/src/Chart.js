@@ -13,23 +13,17 @@ export default class Chart extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const {dragInProgress} = nextProps;
-        if (dragInProgress) {
-            return;
-        }
-        console.log('Updating diagramm');
+        // if (dragInProgress) {
+        //     return;
+        // }
+        // console.log('Updating diagramm');
         // will be called even when shouldComponentUpdate returns false
         const {positions} = nextProps;
         const data = calculateDistributionData(positions);
         // console.log(`Props have changed ${JSON.stringify(data)}`);
         this._d3selection
             .datum(data)
-            .transition().duration(350)
             .call(this._nvd3chart);
-        // TODO: chart looses its use state when updating data
-        // this._nvd3chart.dispatch.stateChange(data);
-        // this._nvd3chart
-        //     .datum(data)
-        //     .dispatch.changeState
     }
 
     componentDidMount() {
@@ -46,7 +40,6 @@ export default class Chart extends React.Component {
             this._d3selection = d3.select(this._chart);
             this._d3selection
                 .datum(data)
-                .transition().duration(350)
                 .call(chart);
 
             this._nvd3chart = chart;

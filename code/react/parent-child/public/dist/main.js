@@ -21504,7 +21504,11 @@
 	    _createClass(HelloMessage, [{
 	        key: 'render',
 	        value: function render() {
-	            return _react2.default.createElement(_Greeter2.default, { greeting: 'Hello', onSend: greeting = this.sent(greeing) });
+	            var _this2 = this;
+	
+	            return _react2.default.createElement(_Greeter2.default, { greeting: this.state.greeting, onSend: function onSend(greeting) {
+	                    return _this2.sent(greeting);
+	                } });
 	        }
 	    }]);
 	
@@ -21554,10 +21558,10 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var HelloMessage = function (_React$Component) {
-	    _inherits(HelloMessage, _React$Component);
+	var Greeter = function (_React$Component) {
+	    _inherits(Greeter, _React$Component);
 	
-	    _createClass(HelloMessage, [{
+	    _createClass(Greeter, [{
 	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -21588,16 +21592,26 @@
 	        }
 	    }]);
 	
-	    function HelloMessage(props) {
-	        _classCallCheck(this, HelloMessage);
+	    function Greeter(props) {
+	        _classCallCheck(this, Greeter);
 	
-	        var _this = _possibleConstructorReturn(this, (HelloMessage.__proto__ || Object.getPrototypeOf(HelloMessage)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (Greeter.__proto__ || Object.getPrototypeOf(Greeter)).call(this, props));
 	
 	        _this.state = { greeting: _this.props.greeting };
 	        return _this;
 	    }
 	
-	    _createClass(HelloMessage, [{
+	    _createClass(Greeter, [{
+	        key: "send",
+	        value: function send() {
+	            this.props.onSend(this.state.greeting);
+	        }
+	    }, {
+	        key: "componentWillReceiveProps",
+	        value: function componentWillReceiveProps(nextProps) {
+	            this.setState({ greeting: nextProps.greeting });
+	        }
+	    }, {
 	        key: "reset",
 	        value: function reset() {
 	            this.setState({ greeting: "" });
@@ -21610,10 +21624,10 @@
 	        }
 	    }]);
 	
-	    return HelloMessage;
+	    return Greeter;
 	}(_react2.default.Component);
 	
-	exports.default = HelloMessage;
+	exports.default = Greeter;
 
 /***/ }
 /******/ ]);

@@ -2,8 +2,9 @@
   "name": "",
   "version": "0.1.0",
   "scripts": {
+    "start": "npm run devserver",
     "clean": "rm -rf dist/ public/dist/",
-    "webpack": "webpack -p",
+    "webpack:prod": "webpack --config webpack.prod.config.js -p",
     "webpack:watch": "webpack && open public/index.html && webpack --watch",
     "devserver": "webpack-dev-server --progress --colors --content-base public",
     "check": "flow"

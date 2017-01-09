@@ -60615,9 +60615,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var Chart = (function () {
     // @ViewChild('svg')
     // svg: SVGElement;
-    function Chart(elementRef, differs) {
+    function Chart(elementRef, differs, ref) {
         this._chart = elementRef.nativeElement;
         this._differs = differs;
+        ref.checkNoChanges();
     }
     Chart.prototype.ngOnInit = function () {
         // console.log(`ngOnInit: ${this._chart}`);
@@ -60715,10 +60716,10 @@ var Chart = (function () {
             changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* ChangeDetectionStrategy */].OnPush
         }),
         __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* Inject */])(__WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */])), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* IterableDiffers */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* IterableDiffers */]) === 'function' && _b) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["g" /* ElementRef */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* IterableDiffers */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* IterableDiffers */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* ChangeDetectorRef */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* ChangeDetectorRef */]) === 'function' && _c) || Object])
     ], Chart);
     return Chart;
-    var _a, _b;
+    var _a, _b, _c;
 }());
 /* harmony default export */ exports["a"] = Chart;
 

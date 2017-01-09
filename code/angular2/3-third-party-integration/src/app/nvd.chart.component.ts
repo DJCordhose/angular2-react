@@ -2,7 +2,7 @@
 // http://juristr.com/blog/2016/04/angular2-change-detection/
 import {
   Component, OnInit, OnChanges, AfterViewInit, DoCheck, SimpleChanges, Inject, ElementRef, ViewChild,
-  Input, ChangeDetectionStrategy, IterableDiffers, IterableDiffer
+  Input, ChangeDetectionStrategy, IterableDiffers, IterableDiffer, ChangeDetectorRef
 } from '@angular/core';
 // import * as d3 from 'd3';
 // import * as nv from 'nvd3';
@@ -16,7 +16,7 @@ import {calculateDistributionData} from '../../../../shared/util';
   template: `<svg width="350" height="350" class="with-3d-shadow with-transitions"></svg>`,
   // styleUrls: ['./nv.d3.css']
   // postion array will never change, so this effectively disables re-draw by angular
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Chart implements OnInit, /*OnChanges, */AfterViewInit, DoCheck {
   private _chart: HTMLElement;
@@ -30,10 +30,10 @@ export default class Chart implements OnInit, /*OnChanges, */AfterViewInit, DoCh
   // @ViewChild('svg')
   // svg: SVGElement;
 
-  constructor(@Inject(ElementRef) elementRef: ElementRef, differs: IterableDiffers) {
+  constructor(@Inject(ElementRef) elementRef: ElementRef, differs: IterableDiffers, ref: ChangeDetectorRef) {
     this._chart = elementRef.nativeElement;
     this._differs = differs;
-
+    ref.checkNoChanges();
   }
 
   ngOnInit() {
@@ -42,7 +42,7 @@ export default class Chart implements OnInit, /*OnChanges, */AfterViewInit, DoCh
   }
 
   ngDoCheck() {
-    // console.log(`ngDoCheck: ${this._chart}`);
+    console.log(`ngDoCheck: ${this._chart}`);
     if (this._d3selection) {
       const changes = this._differ.diff(this.positions);
       if (changes) {
@@ -60,15 +60,15 @@ export default class Chart implements OnInit, /*OnChanges, */AfterViewInit, DoCh
     }
   }
 
-  // ngOnChanges(changes: SimpleChanges) {
-  //   console.log(`ngOnChanges: ${this._chart}`);
-  //   const change = changes["positions"];
-  //
-  //   if (!change.isFirstChange()) {
-  //     this.updateChanges(change.currentValue);
-  //   }
-  // }
-  //
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(`ngOnChanges: ${this._chart}`);
+    // const change = changes["positions"];
+    //
+    // if (!change.isFirstChange()) {
+    //   this.updateChanges(change.currentValue);
+    // }
+  }
+
   updateChanges(positions) {
     if (this._d3selection) {
       const data = calculateDistributionData(positions);

@@ -406,23 +406,23 @@ class Chart extends React.Component {
                     <h4>Angular Chart Component</h4>
                     <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
 @Component({
-  template: `<svg #chart></svg>`,
-  // (2) position array will never change, so this effectively disables re-draw
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: `<svg #chart></svg>`
 })
 class Chart implements AfterViewInit, DoCheck {
   // (1) getting access to the native DOM node
   @ViewChild('chart') private chart: ElementRef;
   private _differ: IterableDiffer;
 
-  constructor(differs: IterableDiffers) {
+  constructor(differs: IterableDiffers, ref: ChangeDetectorRef) {
     this._differ = differs.find(this.positions).create(null);
+    // (2) disables checks
+    ref.checkNoChanges();
   }
   // (3) now we are in charge of rendering
   ngAfterViewInit() {
     createNvd3Chart(this._chart.nativeElement, this.positions);
   }
-  // (4) ngOnChanges won't, but we can handle it low level
+  // (4) ngOnChanges won't be called, but we can handle it low level
   ngDoCheck() {
     const changes = this._differ.diff(this.positions);
     if (changes) {
@@ -433,33 +433,48 @@ class Chart implements AfterViewInit, DoCheck {
                </code></pre>
                 </section>
 
-                <section>
-                    <h2>Scope Of Framework</h2>
-                    <ul>
-                        <li class="fragment">React
-                            <ul>
-                                <li>just the rendering lib
-                                <li>small API surface
-                                <li>often needs additional libraries (e.g. type checking, routing)</li>
-                            </ul>
-                        </li>
-                        <li class="fragment">Angular
-                            <ul>
-                                <li>complete framework (batteries included)</li>
-                                <li>large API Surface</li>
-                                <li>helps you with a lot of decisions</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </section>
+                <!--<section>-->
+                    <!--<h2>Scope Of Framework</h2>-->
+                    <!--<ul>-->
+                        <!--<li class="fragment">React-->
+                            <!--<ul>-->
+                                <!--<li>just the rendering lib-->
+                                <!--<li>small API surface-->
+                                <!--<li>often needs additional libraries (e.g. type checking, routing)</li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                        <!--<li class="fragment">Angular-->
+                            <!--<ul>-->
+                                <!--<li>complete framework (batteries included)</li>-->
+                                <!--<li>large API Surface</li>-->
+                                <!--<li>helps you with a lot of decisions</li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</section>-->
 
                 <section>
                     <h2>Conclusion</h2>
                     <ul>
                         <li>React and Angular 2 provide similar solutions to our challenges</li>
                         <li>Learning to do one thing in one of them can teach you about the other</li>
+                        <li>Easy to switch from one to another</li>
+                        <li>If you know Angular 2 you can get started with React in hours and the other way round</li>
                     </ul>
-                    <p class="fragment">Bottom Line: Angular 2 gives you the full stack, React gives you choices</p>
+                </section>
+
+                <section>
+                    <h2>Bottom Line: Angular or React?</h2>
+                    <p>No big architectural or technical differences</p>
+                    <!--Redux vs ngrx/store-->
+                    <!--EventEmitters vs Callbacks-->
+                    <!--Rxjs vs Redux connect and Reselect -->
+                    <ul>
+                        <li>Personal taste and history
+                        <li>Large vs Small API Surface
+                        <li>Choices vs Full Stack / Batteries Included
+                        <li>Who do you Trust and which Community do you sympathize with?
+                    </ul>
                 </section>
 
 

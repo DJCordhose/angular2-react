@@ -181,6 +181,7 @@ class SubComponent {
 }
                     </code></pre>
                     <p>At most contains simple and local UI logic</p>
+                    <p>Restricted to UI state if at all</p>
                 </section>
 
                 <section>
@@ -190,8 +191,7 @@ class SubComponent {
                     <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
 @Component({
   selector: 'app-root',
-  template: `<sub greeting={{greeting}} (onSend)="sent($event)">
-             </sub>`
+  template: `&lt;sub greeting={{greeting}} (onSend)="sent($event)">&lt;/sub>`
 })
 class AppComponent {
   greeting = 'Hiho';
@@ -202,11 +202,11 @@ class AppComponent {
   }
 }
                     </code></pre>
-                    <p>Contains all business logic (in sent)</p>
+                    <p>Contains all (not much in this case) business logic (in sent)</p>
                 </section>
 
                 <section>
-                    <h2>Idea is totally framework agnostic</h2>
+                    <h2>Ideas are totally framework agnostic</h2>
                     <h3>Same thing in React</h3>
                 </section>
 
@@ -217,7 +217,8 @@ class AppComponent {
                     <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
 class HelloMessage extends React.Component {
     render() {
-        return &lt;Greeter greeting={this.state.greeting} onSend={(greeting) => this.sent(greeting)}/>;
+        return &lt;Greeter greeting={this.state.greeting}
+                        onSend={(greeting) => this.sent(greeting)}/>;
     }
     constructor(props) {
         super(props);
@@ -230,17 +231,17 @@ class HelloMessage extends React.Component {
     }
 }
                     </code></pre>
-                    <p>Contains all business logic (in sent)</p>
+                    <p>Again: Contains all business logic (in sent)</p>
                 </section>
 
                 <section>
                     <h3>The dumb component in React</h3>
-                    <p>Gets data via <em>this.props.greeting</em></p>
+                    <p>Gets data via <em>this.props.greeting</em> (copied into local UI state)</p>
                     <p>Signals change via <em>this.props.onSend</em></p>
                     <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
 class Greeter extends React.Component {
     render() {
-        return <div>...</div>);
+        return &lt;div>...&lt;/div>);
     }
     send() {
         this.props.onSend(this.state.greeting);
@@ -279,11 +280,14 @@ class Greeter extends React.Component {
 
                 <section>
                     <h2>A really mean example</h2>
-                    <p>Super fast using no framework at all (as only one box at a time needs update)</p>
-                    <p>Overhead introduced by framework makes application slow</p>
-                    <p>Challenge is to execute as little code as possible when updating a single model of a box</p>
-                    <p>Model naturally is a flat list of boxes</p>
-                    <p>No natural hierarchy - which would make change detection easier</p>
+                    <ul>
+                        <li class="fragment">Super fast using no framework at all (as only one box at a time needs update)</li>
+                        <li class="fragment">Overhead introduced by framework makes application slow</li>
+                        <li class="fragment">Challenge is to execute as little code as possible when updating a single model of a box</li>
+                        <li class="fragment">Update happens at every mouse move event (can be hundreds per second)</li>
+                        <li class="fragment">Model naturally is a flat list of boxes</li>
+                        <li class="fragment">No natural hierarchy - which would make change detection easier</li>
+                    </ul>
                 </section>
 
                 <section>
@@ -311,10 +315,10 @@ class Greeter extends React.Component {
 
                 <section>
                     <h2>Change Detection on Level of Model</h2>
-                    <p><em>shouldComponentUpdate</em> is a lifecycle method on a component that can shortcut this procedure</p>
+                    <p><strong>shouldComponentUpdate</strong> is a lifecycle method on a component that can shortcut this procedure</p>
                     <p>it can check old model against new model</p>
-                    <p>immutable data structures
-                        (<a href="https://facebook.github.io/immutable-js/" target="_blank">immutable.js</a>) can speed up the check</p>
+                    <p><strong>immutable data structures</strong>
+                        (<a href="https://facebook.github.io/immutable-js/" target="_blank">immutable.js</a>) <strong>can speed up</strong> the check</p>
                 </section>
 
                 <section>
@@ -349,7 +353,7 @@ class Box extends React.Component {
           <p>Angular allows us to control a component's <strong>ChangeDetectionStrategy</strong></p>
             <ul>
               <li><strong>Skips subtrees</strong> for change detection if set to <strong>OnPush</strong> and no inputs have changed</li>
-              <li>Requires <strong>immutable data structures</strong></li>
+              <li><strong>Requires === semantics</strong>, immutable data structures can speed that up</li>
             </ul>
         </section>
 
@@ -375,7 +379,7 @@ export class SquareBoxComponent {
                 <section>
                     <h2>Performance</h2>
                     <p><strong>Similar</strong> for Angular and React <strong>w/o optimization</strong> and
-                        <strong>w optimization</strong></p>
+                        <strong>w/ optimization</strong></p>
                     <p>With optimization about twice as fast</p>
                     <p>Often optimization brings more, as rendering a single box is fast anyway</p>
                 </section>

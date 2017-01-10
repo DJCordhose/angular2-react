@@ -106,13 +106,43 @@
                 </section>
 
                 <section>
+                    <h1>Objective</h1>
+                    <h2>How to solve similar challenges in Angular 2+ and React?</h2>
+                </section>
+
+                <section>
+                    <h1>Not an Objective</h1>
+                    <h2>Another Angular vs React talk</h2>
+                </section>
+
+                <section>
                     <h1>Topic I</h1>
                     <h2>Application architecture</h2>
                 </section>
 
                 <section>
-                    <h3>Smart/Dumb, Parent/Child, Controller/View</h3>
-                    <p>Different names for the same concept:</p>
+                    <h3>Smart/Dumb, Container/Child, Controller/View</h3>
+                    <ul>
+                        <li class="fragment">Dumb Component
+                            <ul>
+                                <li>Reuseable</li>
+                                <li>No business logic</li>
+                                <li>No management of application state</li>
+                            </ul>
+                        </li>
+                        <li class="fragment">Smart Component
+                            <ul>
+                                <li>Often Domain specific</li>
+                                <li>Generally not Reuseable</li>
+                                <li>Contains business logic</li>
+                                <li>Manages application state</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>Different names for the same concept</h3>
                     <ol>
                         <li>pass data down from smart component</li>
                         <li>events in dumb component cause actions in smart component</li>
@@ -183,7 +213,7 @@ class AppComponent {
                     <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
 class HelloMessage extends React.Component {
     render() {
-        return <Greeter greeting={this.state.greeting} onSend={(greeting) => this.sent(greeting)}/>;
+        return &lt;Greeter greeting={this.state.greeting} onSend={(greeting) => this.sent(greeting)}/>;
     }
     constructor(props) {
         super(props);
@@ -353,11 +383,15 @@ export class SquareBoxComponent {
 
                 <section>
                     <h2>3rd Party libraries?</h2>
+                    <div class="fragment">
                     <p>There are a lot of 3rd party libraries around</p>
                     <p>They are typically not written in the framework of your choice</p>
-                    <p>Examples</p>
-                    <p><em>jQuery</em> and <em>jQuery</em> plugins like <em>Bootstrap</em></p>
-                    <p><em>d3</em> for interactive SVGs and more abstract charting libs like <em>nvd3</em></p>
+                    </div>
+                    <div class="fragment">
+                        <p>Examples</p>
+                        <p><em>jQuery</em> and <em>jQuery</em> plugins like <em>Bootstrap</em></p>
+                        <p><em>d3</em> for interactive SVGs and more abstract charting libs like <em>nvd3</em></p>
+                    </div>
                 </section>
 
                 <section>
@@ -374,7 +408,7 @@ export class SquareBoxComponent {
                         <li>How to get access to the DOM node of the component?
                         <li>How do we tell the framework that rendering is on us?
                         <li>When exactly do we take over rendering?
-                        <li>How to we still get updates?
+                        <li>How does the 3rd party lib still get updates from state changes?
                     </ol>
                 </section>
                 <section>

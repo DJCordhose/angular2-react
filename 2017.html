@@ -119,147 +119,145 @@
                     <h2>Another Angular vs React talk</h2>
                 </section>
 
-                <!--<section>-->
-                <!--<section>-->
-                    <!--<h1>Topic I</h1>-->
-                    <!--<h2>Application architecture</h2>-->
-                    <!--<h1 style="color: red !important">Cancelled for today</h1>-->
-                <!--</section>-->
+                <section>
+                    <h1>Topic I</h1>
+                    <h2>Application architecture</h2>
+                </section>
 
-                <!--<section>-->
-                    <!--<h3>Smart/Dumb, Container/Child, Controller/View</h3>-->
-                    <!--<ul>-->
-                        <!--<li class="fragment">Dumb Component-->
-                            <!--<ul>-->
-                                <!--<li>Reuseable</li>-->
-                                <!--<li>No business logic</li>-->
-                                <!--<li>No management of application state</li>-->
-                            <!--</ul>-->
-                        <!--</li>-->
-                        <!--<li class="fragment">Smart Component-->
-                            <!--<ul>-->
-                                <!--<li>Often Domain specific</li>-->
-                                <!--<li>Generally not Reuseable</li>-->
-                                <!--<li>Contains business logic</li>-->
-                                <!--<li>Manages application state</li>-->
-                            <!--</ul>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</section>-->
+                <section>
+                    <h3>Smart/Dumb, Container/Child, Controller/View</h3>
+                    <ul>
+                        <li class="fragment">Dumb Component
+                            <ul>
+                                <li>Reuseable</li>
+                                <li>No business logic</li>
+                                <li>No management of application state</li>
+                            </ul>
+                        </li>
+                        <li class="fragment">Smart Component
+                            <ul>
+                                <li>Often Domain specific</li>
+                                <li>Generally not Reuseable</li>
+                                <li>Contains business logic</li>
+                                <li>Manages application state</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
 
-                <!--<section>-->
-                    <!--<h3>Different names for the same concept</h3>-->
-                    <!--<ol>-->
-                        <!--<li>pass data down from smart component</li>-->
-                        <!--<li>events in dumb component cause actions in smart component</li>-->
-                    <!--</ol>-->
-                <!--</section>-->
+                <section>
+                    <h3>Different names for the same concept</h3>
+                    <ol>
+                        <li>pass data down from smart component</li>
+                        <li>events in dumb component cause actions in smart component</li>
+                    </ol>
+                </section>
 
-                <!--<section>-->
-                    <!--<h3>A simple example</h3>-->
-                    <!--<a href="code/angular2/parent-child/dist" target="_blank">-->
-                    <!--<img src="screenshot_hello_world.png">-->
-                    <!--</a>-->
+                <section>
+                    <h3>A simple example</h3>
+                    <a href="code/angular2/parent-child/dist" target="_blank">
+                    <img src="screenshot_hello_world.png">
+                    </a>
 
-                <!--</section>-->
+                </section>
 
-                <!--<section>-->
-                    <!--<h3>The dumb component</h3>-->
-                    <!--<p>Gets data via <em>@Input</em></p>-->
-                    <!--<p>Signals change via <em>@Output</em></p>-->
-                    <!--<pre><code data-trim contenteditable class="line-numbers" data-leftpad>-->
-<!--@Component({...})-->
-<!--class SubComponent {-->
-  <!--@Input() greeting: string;-->
-  <!--@Output() onSend = new EventEmitter();-->
-  <!--reset(input: HTMLInputElement) {-->
-    <!--this.greeting = '';-->
-    <!--input.focus();-->
-  <!--}-->
+                <section>
+                    <h3>The dumb component</h3>
+                    <p>Gets data via <em>@Input</em></p>
+                    <p>Signals change via <em>@Output</em></p>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+@Component({...})
+class SubComponent {
+  @Input() greeting: string;
+  @Output() onSend = new EventEmitter();
+  reset(input: HTMLInputElement) {
+    this.greeting = '';
+    input.focus();
+  }
 
-  <!--send() {-->
-    <!--this.onSend.emit(this.greeting);-->
-  <!--}-->
-<!--}-->
-                    <!--</code></pre>-->
-                    <!--<p>At most contains simple and local UI logic</p>-->
-                    <!--<p>Restricted to UI state if at all</p>-->
-                <!--</section>-->
+  send() {
+    this.onSend.emit(this.greeting);
+  }
+}
+                    </code></pre>
+                    <p>At most contains simple and local UI logic</p>
+                    <p>Restricted to UI state if at all</p>
+                </section>
 
-                <!--<section>-->
-                    <!--<h3>The smart component</h3>-->
-                    <!--<p>Passes down data via <em>greeting</em> property</p>-->
-                    <!--<p>Passed down callback via <em>onSend</em></p>-->
-                    <!--<pre><code data-trim contenteditable class="line-numbers" data-leftpad>-->
-<!--@Component({-->
-  <!--selector: 'app-root',-->
-  <!--template: `&lt;sub greeting={{greeting}} (onSend)="sent($event)">&lt;/sub>`-->
-<!--})-->
-<!--class AppComponent {-->
-  <!--greeting = 'Hiho';-->
+                <section>
+                    <h3>The smart component</h3>
+                    <p>Passes down data via <em>greeting</em> property</p>
+                    <p>Passed down callback via <em>onSend</em></p>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+@Component({
+  selector: 'app-root',
+  template: `&lt;sub greeting={{greeting}} (onSend)="sent($event)">&lt;/sub>`
+})
+class AppComponent {
+  greeting = 'Hiho';
 
-  <!--sent(greeting) {-->
-    <!--console.log(`Sent: ${greeting}`);-->
-    <!--this.greeting = `${greeting}, and you!`-->
-  <!--}-->
-<!--}-->
-                    <!--</code></pre>-->
-                    <!--<p>Contains all (not much in this case) business logic (in sent)</p>-->
-                <!--</section>-->
+  sent(greeting) {
+    console.log(`Sent: ${greeting}`);
+    this.greeting = `${greeting}, and you!`
+  }
+}
+                    </code></pre>
+                    <p>Contains all (not much in this case) business logic (in sent)</p>
+                </section>
 
-                <!--<section>-->
-                    <!--<h2>Ideas are totally framework agnostic</h2>-->
-                    <!--<h3>Same thing in React</h3>-->
-                <!--</section>-->
+                <section>
+                    <h2>Ideas are totally framework agnostic</h2>
+                    <h3>Same thing in React</h3>
+                </section>
 
-                <!--<section>-->
-                    <!--<h3>The smart component in React</h3>-->
-                    <!--<p>Passes down data via <em>greeting</em> property</p>-->
-                    <!--<p>Passed down callback via <em>onSend</em></p>-->
-                    <!--<pre><code data-trim contenteditable class="line-numbers" data-leftpad>-->
-<!--class HelloMessage extends React.Component {-->
-    <!--render() {-->
-        <!--return &lt;Greeter greeting={this.state.greeting}-->
-                        <!--onSend={(greeting) => this.sent(greeting)}/>;-->
-    <!--}-->
-    <!--constructor(props) {-->
-        <!--super(props);-->
-        <!--this.state = {greeting: this.props.greeting};-->
-    <!--}-->
+                <section>
+                    <h3>The smart component in React</h3>
+                    <p>Passes down data via <em>greeting</em> property</p>
+                    <p>Passed down callback via <em>onSend</em></p>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+class HelloMessage extends React.Component {
+    render() {
+        return &lt;Greeter greeting={this.state.greeting}
+                        onSend={(greeting) => this.sent(greeting)}/>;
+    }
+    constructor(props) {
+        super(props);
+        this.state = {greeting: this.props.greeting};
+    }
 
-    <!--sent(greeting) {-->
-        <!--console.log(`Sent: ${greeting}`);-->
-        <!--this.setState({greeting: `${greeting}, and you!`});-->
-    <!--}-->
-<!--}-->
-                    <!--</code></pre>-->
-                    <!--<p>Again: Contains all business logic (in sent)</p>-->
-                <!--</section>-->
+    sent(greeting) {
+        console.log(`Sent: ${greeting}`);
+        this.setState({greeting: `${greeting}, and you!`});
+    }
+}
+                    </code></pre>
+                    <p>Again: Contains all business logic (in sent)</p>
+                </section>
 
-                <!--<section>-->
-                    <!--<h3>The dumb component in React</h3>-->
-                    <!--<p>Gets data via <em>this.props.greeting</em> (copied into local UI state)</p>-->
-                    <!--<p>Signals change via <em>this.props.onSend</em></p>-->
-                    <!--<pre><code data-trim contenteditable class="line-numbers" data-leftpad>-->
-<!--class Greeter extends React.Component {-->
-    <!--render() {-->
-        <!--return &lt;div>...&lt;/div>);-->
-    <!--}-->
-    <!--send() {-->
-        <!--this.props.onSend(this.state.greeting);-->
-    <!--}-->
-    <!--reset() {-->
-        <!--this.setState({greeting: ""});-->
-        <!--this.refs.in.focus();-->
-    <!--}-->
-    <!--updateModel(event) {-->
-        <!--this.setState({greeting: event.target.value});-->
-    <!--}-->
-<!--}-->
-                    <!--</code></pre>-->
-                    <!--<p>Template is just JavaScript, no two way binding (updateModel needed to update model)</p>-->
-                <!--</section>-->
-                <!--</section>-->
+                <section>
+                    <h3>The dumb component in React</h3>
+                    <p>Gets data via <em>this.props.greeting</em> (copied into local UI state)</p>
+                    <p>Signals change via <em>this.props.onSend</em></p>
+                    <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
+class Greeter extends React.Component {
+    render() {
+        return &lt;div>...&lt;/div>);
+    }
+    send() {
+        this.props.onSend(this.state.greeting);
+    }
+    reset() {
+        this.setState({greeting: ""});
+        this.refs.in.focus();
+    }
+    updateModel(event) {
+        this.setState({greeting: event.target.value});
+    }
+}
+                    </code></pre>
+                    <p>Template is just JavaScript, no two way binding (updateModel needed to update model)</p>
+                </section>
+
                 <section>
                     <h1>Topic II</h1>
                     <h2>Advanced Change Detection</h2>

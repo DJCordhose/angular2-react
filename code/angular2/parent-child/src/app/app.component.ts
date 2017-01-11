@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import GreetingService from './GreetingService';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +8,11 @@ import { Component } from '@angular/core';
 export class AppComponent {
   greeting = 'Hiho';
 
+  constructor(private greetingService: GreetingService) {
+  }
+
   sent(greeting) {
     console.log(`Sent: ${greeting}`);
-    this.greeting = `${greeting}, and you!`
+    this.greeting = this.greetingService.greetBack(greeting);
   }
 }

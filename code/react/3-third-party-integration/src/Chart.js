@@ -43,6 +43,9 @@ export default class Chart extends React.Component {
                 .call(chart);
 
             this._nvd3chart = chart;
+            chart.pie.dispatch.on("elementClick", function(e) {
+                alert("You've clicked " + e.data.label);
+            });
             return chart;
         });
     }
